@@ -7,6 +7,15 @@ import styles from './ToastPlayground.module.css';
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
+  const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0])
+  const [message, setMessage] = React.useState('')
+
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    setMessage('');
+  }
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -14,7 +23,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -24,7 +33,11 @@ function ToastPlayground() {
             Message
           </label>
           <div className={styles.inputWrapper}>
-            <textarea id="message" className={styles.messageInput} />
+            <textarea 
+              id="message" 
+              className={styles.messageInput} 
+              value={message} onChange={(event) => setMessage(event.target.value)}
+            />
           </div>
         </div>
 
@@ -33,17 +46,19 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <label htmlFor="variant-notice">
+          {VARIANT_OPTIONS.map((item) => (
+            <label key={item} htmlFor={`variant-${item}`}>
               <input
-                id="variant-notice"
+                id={`variant-${item}`}
                 type="radio"
-                name="variant"
-                value="notice"
+                name={item}
+                value={item}
+                checked={item === variant}
+                onChange={(event) => setVariant(event.target.value)}
               />
-              notice
+              {item}
             </label>
-
-            {/* TODO Other Variant radio buttons here */}
+          ))}
           </div>
         </div>
 
@@ -55,7 +70,7 @@ function ToastPlayground() {
             <Button>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
