@@ -13,3 +13,8 @@
   cursor: pointer;
   outline-offset: 4px;
 }
+
+button[disabled=disabled], button:disabled {
+  background: #a39b9b;
+  cursor: inherit;
+}
