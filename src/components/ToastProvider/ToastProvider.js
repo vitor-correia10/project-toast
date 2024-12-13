@@ -3,8 +3,24 @@ import React from 'react';
 export const ToastContext = React.createContext();
 
 function ToastProvider({children}) {
-  const [toasts, setToasts] = React.useState([]);
+  const initialValue = [];
+  const [toasts, setToasts] = React.useState(initialValue);
 
+  React.useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.code === 'Escape') {
+        setToasts(initialValue);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // clean up ungoing event listener
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  
   function createToast(message, variant) {
     const nextToasts = [
       ...toasts,
